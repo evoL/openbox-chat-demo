@@ -18,7 +18,7 @@ class ChatSession < ActiveRecord::Base
 
   def token_for(user)
     token = ChatToken.where(user: user, session: self) \
-            .where("chat_tokens.expires_at < ?", Time.now) \
+            .where("chat_tokens.expires_at > ?", Time.now) \
             .last
 
     unless token
