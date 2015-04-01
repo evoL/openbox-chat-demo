@@ -1,2 +1,21 @@
 <h1>Video chat</h1>
 <h2>between <%= current_user.name %> and <%= @user.name %></h2>
+
+<div id="Publisher"></div>
+
+<script type="text/javascript">
+  var apiKey    = "<%= @api_key %>";
+  var sessionId = "<%= @session.opentok_id %>";
+  var token     = "<%= @token.token %>";
+
+  var session = OT.initSession(apiKey, sessionId);
+
+  session.on("streamCreated", function(event) {
+    session.subscribe(event.stream);
+  });
+
+  session.connect(token, function(error) {
+    var publisher = OT.initPublisher({targetElement: 'Publisher'});
+    session.publish(publisher);
+  });
+</script>

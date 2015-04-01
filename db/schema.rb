@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401123346) do
+ActiveRecord::Schema.define(version: 20150401145811) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "chat_sessions", force: :cascade do |t|
+    t.string  "opentok_id", null: false
+    t.integer "users",                   array: true
+  end
+
+  add_index "chat_sessions", ["users"], name: "index_chat_sessions_on_users", using: :btree
+
+  create_table "chat_tokens", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "session_id"
+    t.datetime "expires_at"
+    t.string   "token"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
